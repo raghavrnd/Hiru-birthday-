@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Happy Birthday Hirva</title>
+<style>
+  :root{
+    --red:#e63946; --pink:#ff6fa3; --white:#fff; --bg:#fff0f6;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;font-family:system-ui,Segoe UI,Roboto,Arial;background:linear-gradient(135deg,var(--bg),#fff);color:#222}
+  .stage{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:18px}
+  .card{width:100%;max-width:980px;border-radius:14px;background:rgba(255,255,255,0.96);box-shadow:0 18px 50px rgba(0,0,0,0.08);overflow:hidden;padding:20px;text-align:center}
+  .pages{position:relative;height:76vh}
+  .page{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:10px;transition:opacity .36s,transform .36s;opacity:1}
+  .page.hidden{opacity:0;pointer-events:none;transform:translateY(18px) scale(.994)}
+  h1{margin:0;color:var(--red);font-size:clamp(1.6rem,4.2vw,2.8rem)}
+  .hint{color:#444;font-size:1rem}
+  /* big responsive svg area — larger ratio */
+  .svg-wrap { width: min(92vw, 820px); height: min(62vh, 520px); cursor:pointer; user-select:none; display:block; }
+  /* flames & smoke */
+  .flame { transition: opacity .55s, transform .6s; transform-origin:center; }
+  .smoke { opacity:0; transition:opacity .6s, transform .9s; transform: translateY(0) scale(.9); fill:rgba(150,150,150,.18); }
+  /* slice */
+  #slice { opacity:0; transform: translate(-120px,0) rotate(-6deg); transition: transform .9s cubic-bezier(.2,.9,.25,1), opacity .6s; }
+  /* fireworks canvas spans page 3 */
+  #fw { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:0 }
+  .content3 { position:relative; z-index:2; }
+  .footer { margin-top:12px; color:#666; font-size:.92rem }
+  @media (max-width:540px){ h1{font-size:1.4rem} .svg-wrap{width:94vw;height:52vh} }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="card" role="main" aria-label="Birthday experience">
+      <div class="pages">
+
+        <!-- PAGE 1: Candles -->
+        <section id="p1" class="page" aria-label="Blow candles">
+          <h1>Tap the candles to blow them out 🎂</h1>
+          <div class="svg-wrap" id="candlesWrap" title="Tap to blow">
+            <!-- inline SVG - large -->
+            <svg viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+              <ellipse cx="160" cy="205" rx="120" ry="12" fill="#f7d7df"/>
+              <rect x="60" y="120" width="200" height="70" rx="18" fill="#ffd6e0" stroke="#ffb3c7"/>
+              <rect x="50" y="95" width="220" height="40" rx="18" fill="#fff"/>
+              <!-- candle group 1 -->
+              <g transform="translate(75,80)" class="candleG">
+                <rect width="18" height="60" rx="5" fill="#fff4f7"/>
+                <ellipse class="flame" cx="9" cy="-8" rx="9" ry="12" fill="#ffd166"/>
+                <ellipse class="flame" cx="9" cy="-14" rx="5" ry="8" fill="#ff7b00" opacity=".95"/>
+                <ellipse class="smoke" cx="9" cy="-18" rx="7" ry="7"/>
+              </g>
+              <!-- candle group 2 -->
+              <g transform="translate(141,80)" class="candleG">
+                <rect width="18" height="60" rx="5" fill="#fff"/>
+                <ellipse class="flame" cx="9" cy="-8" rx="9" ry="12" fill="#ffd166"/>
+                <ellipse class="flame" cx="9" cy="-14" rx="5" ry="8" fill="#ff7b00" opacity=".95"/>
+                <ellipse class="smoke" cx="9" cy="-18" rx="7" ry="7"/>
+              </g>
+              <!-- candle group 3 -->
+              <g transform="translate(207,80)" class="candleG">
+                <rect width="18" height="60" rx="5" fill="#fff6ea"/>
+                <ellipse class="flame" cx="9" cy="-8" rx="9" ry="12" fill="#ffd166"/>
+                <ellipse class="flame" cx="9" cy="-14" rx="5" ry="8" fill="#ff7b00" opacity=".95"/>
+                <ellipse class="smoke" cx="9" cy="-18" rx="7" ry="7"/>
+              </g>
+            </svg>
+          </div>
+          <div class="hint">Red • White • Pink — tap anywhere on the cake image</div>
+        </section>
+
+        <!-- PAGE 2: Cake -->
+        <section id="p2" class="page hidden" aria-label="Cut cake page">
+          <h1>Tap the cake to cut a slice 🍰</h1>
+          <div class="svg-wrap" id="cakeWrap" title="Tap to cut">
+            <svg viewBox="0 0 340 240" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+              <ellipse cx="170" cy="205" rx="120" ry="12" fill="#f7d7df"/>
+              <rect x="70" y="110" width="200" height="80" rx="22" fill="#ff9ec9"/>
+              <rect x="60" y="90" width="220" height="40" rx="20" fill="#fff"/>
+              <!-- slice -->
+              <g id="slice" transform="translate(170,140)">
+                <path d="M-10 60 C 30 10, 70 -20, 120 -60 L 110 10 C 70 40, 40 60, -10 80 Z" fill="#ffe3f0" stroke="#ffb6d5"/>
+              </g>
+            </svg>
+          </div>
+          <div class="hint">Make a wish — then tap the cake</div>
+        </section>
+
+        <!-- PAGE 3: Final -->
+        <section id="p3" class="page hidden" aria-label="Final celebration">
+          <canvas id="fw"></canvas>
+          <div class="content3">
+            <h1>🎆 Happy Birthday, Hirva! 🎆</h1>
+            <div class="hint">Wishing you joy & sweet surprises 💕</div>
+          </div>
+        </section>
+
+      </div>
+      <div class="footer">Tap the image to progress — works on mobile</div>
+    </div>
+  </div>
+
+<script>
+(() => {
+  // page elements
+  const p1 = document.getElementById('p1'), p2 = document.getElementById('p2'), p3 = document.getElementById('p3');
+  const candlesWrap = document.getElementById('candlesWrap');
+  const cakeWrap = document.getElementById('cakeWrap');
+  const slice = document.getElementById('slice');
+
+  // show/hide
+  function show(from, to){
+    from.classList.add('hidden');
+    setTimeout(()=> to.classList.remove('hidden'), 140);
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  // Audio (WebAudio) setup
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  let audioCtx = null;
+  function ensureAudio(){ if(!audioCtx) audioCtx = new AudioCtx(); return audioCtx; }
+
+  // Blow sound: short filtered noise
+  function playBlowSound(){
+    const ctx = ensureAudio();
+    const now = ctx.currentTime;
+    const length = 0.55;
+    const buffer = ctx.createBuffer(1, ctx.sampleRate * length, ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for(let i=0;i<data.length;i++){
+      const env = Math.exp(-i/(ctx.sampleRate*0.35));
+      data[i] = (Math.random()*2 - 1) * 0.6 * env;
+    }
+    const src = ctx.createBufferSource(); src.buffer = buffer;
+    const flt = ctx.createBiquadFilter(); flt.type = 'lowpass'; flt.frequency.setValueAtTime(1600, now);
+    src.connect(flt); flt.connect(ctx.destination);
+    src.start(now); src.stop(now + length);
+  }
+
+  // Cut sound: quick pluck + tiny cheer
+  function playCutSound(){
+    const ctx = ensureAudio();
+    const now = ctx.currentTime;
+    // pluck
+    const o = ctx.createOscillator(); const g = ctx.createGain();
+    o.type = 'triangle'; o.frequency.setValueAtTime(880, now);
+    o.frequency.exponentialRampToValueAtTime(440, now + 0.22);
+    g.gain.setValueAtTime(0.0001, now);
+    g.gain.exponentialRampToValueAtTime(0.35, now + 0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001, now + 0.6);
+    o.connect(g); g.connect(ctx.destination);
+    o.start(now); o.stop(now + 0.65);
+    // small cheer blip
+    setTimeout(()=> {
+      const b = ctx.createOscillator(); const gb = ctx.createGain();
+      b.type = 'sine'; b.frequency.setValueAtTime(1200, ctx.currentTime);
+      gb.gain.setValueAtTime(0.0001, ctx.currentTime);
+      b.connect(gb); gb.connect(ctx.destination);
+      gb.gain.exponentialRampToValueAtTime(0.22, ctx.currentTime + 0.01);
+      gb.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.15);
+      b.start(); setTimeout(()=>b.stop(), 160);
+    }, 120);
+  }
+
+  // Simple "Happy Birthday" melody
+  function playHappyBirthday(){
+    const ctx = ensureAudio();
+    const now = ctx.currentTime + 0.05;
+    const notes = [
+      [392,0.36],[392,0.36],[440,0.52],[392,0.52],[523.25,0.56],[494,0.92],
+      [392,0.36],[392,0.36],[523.25,0.52],[440,0.52],[587.33,0.7],[523.25,0.92],
+      [392,0.36],[392,0.36],[784,0.52],[587.33,0.52],[523.25,0.52],[494,0.92]
+    ];
+    let t = now;
+    for(const [freq,dur] of notes){
+      tone(freq, dur, t);
+      t += dur;
+    }
+  }
+
+  function tone(freq, duration, startTime){
+    const ctx = ensureAudio();
+    const o = ctx.createOscillator(); const g = ctx.createGain();
+    o.type = 'sine';
+    o.frequency.setValueAtTime(freq, startTime);
+    g.gain.setValueAtTime(0.0001, startTime);
+    g.gain.exponentialRampToValueAtTime(0.30, startTime + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, startTime + duration - 0.02);
+    o.connect(g); g.connect(ctx.destination);
+    o.start(startTime); o.stop(startTime + duration);
+  }
+
+  // Confetti burst for cake cut
+  function spawnConfettiBurst(root){
+    const colors = ['#e63946','#ff6fa3','#ffd166','#ffffff','#ffb4c6','#ffd700'];
+    for(let i=0;i<32;i++){
+      const el = document.createElement('div');
+      el.style.position='absolute';
+      el.style.width=(6+Math.random()*10)+'px';
+      el.style.height=(8+Math.random()*12)+'px';
+      el.style.background=colors[Math.floor(Math.random()*colors.length)];
+      el.style.left=(45 + Math.random()*30)+'%';
+      el.style.top=(40 + Math.random()*10)+'%';
+      el.style.opacity=1; el.style.transform='translateY(0) rotate('+ (Math.random()*360) +'deg)';
+      el.style.borderRadius='2px'; el.style.pointerEvents='none'; el.style.zIndex=9999;
+      root.appendChild(el);
+      setTimeout(()=>{ el.style.transition='transform 1100ms cubic-bezier(.1,.9,.2,1), opacity 1100ms'; el.style.transform = `translate(${(Math.random()*260-130)}px,${-(150+Math.random()*260)}px) rotate(${Math.random()*720}deg)`; el.style.opacity=0; }, 20);
+      setTimeout(()=> root.removeChild(el), 1400);
+    }
+  }
+
+  // Fireworks canvas
+  const canvas = document.getElementById('fw'); const ctx = canvas.getContext('2d');
+  let DPR = window.devicePixelRatio || 1;
+  let W=0,H=0; function resize(){ DPR = window.devicePixelRatio || 1; canvas.width = Math.floor(canvas.clientWidth * DPR); canvas.height = Math.floor(canvas.clientHeight * DPR); ctx.setTransform(DPR,0,0,DPR,0,0); W = canvas.clientWidth; H = canvas.clientHeight; }
+  window.addEventListener('resize', resize); resize();
+  class Particle {
+    constructor(x,y,c){ this.x=x; this.y=y; this.vx=(Math.random()-0.5)*6; this.vy=(Math.random()-0.9)*6; this.alpha = 1; this.color = c; this.size = 2 + Math.random()*4; }
+    update(){ this.x += this.vx; this.y += this.vy; this.vy += 0.08; this.alpha -= 0.013; }
+    draw(){ ctx.globalAlpha = Math.max(0, this.alpha); ctx.beginPath(); ctx.fillStyle = this.color; ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fill(); ctx.globalAlpha = 1; }
+  }
+  let particles = [];
+  function spawnFirework(){
+    const x = Math.random()*W*0.8 + W*0.1;
+    const y = Math.random()*H*0.3 + H*0.05;
+    const colors = ['#e63946','#ff6fa3','#ffd166','#ffffff','#ffb4c6','#ffd700'];
+    for(let i=0;i<64;i++) particles.push(new Particle(x,y,colors[Math.floor(Math.random()*colors.length)]));
+  }
+  function loop(){
+    ctx.clearRect(0,0,canvas.width, canvas.height);
+    for(let i=particles.length-1;i>=0;i--){
+      const p = particles[i];
+      p.update(); p.draw();
+      if(p.alpha <= 0) particles.splice(i,1);
+    }
+    requestAnimationFrame(loop);
+  }
+  loop();
+  let fwInterval = null;
+
+  function startFinal(){
+    spawnFirework(); setTimeout(spawnFirework,420); setTimeout(spawnFirework,900);
+    if(fwInterval) clearInterval(fwInterval);
+    fwInterval = setInterval(spawnFirework,1200);
+    // play melody
+    try{ playHappyBirthday(); } catch(e){ /* ignore */ }
+  }
+
+  // Interaction wiring - pointer events work for touch & mouse
+  candlesWrap.addEventListener('pointerdown', (ev) => {
+    // resume audio ctx if suspended
+    try{ if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume(); }catch(e){}
+    // blow sound
+    playBlowSound();
+    // flames hide
+    document.querySelectorAll('.flame').forEach((f,i) => {
+      f.style.opacity = 0; f.style.transform = 'scaleY(0.18)';
+    });
+    // smoke visible briefly
+    document.querySelectorAll('.smoke').forEach((s,i) => {
+      setTimeout(()=>{ s.style.opacity = 1; s.style.transform='translateY(-36px) scale(1.2)'; }, 120 + i*120);
+      setTimeout(()=>{ s.style.opacity = 0; }, 950 + i*120);
+    });
+    setTimeout(()=> show(p1, p2), 820);
+  }, {passive:true});
+
+  cakeWrap.addEventListener('pointerdown', (ev) => {
+    try{ if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume(); }catch(e){}
+    // animate slice out
+    slice.style.opacity = 1;
+    slice.style.transform = 'translate(80px,-30px) rotate(-6deg) scale(1.03)';
+    // cut sound
+    playCutSound();
+    // confetti
+    spawnConfettiBurst(document.querySelector('.card'));
+    setTimeout(()=> show(p2, p3), 880);
+    setTimeout(()=> startFinal(), 1100);
+  }, {passive:true});
+
+  // Accessibility unlock: first user gesture allows audio, but our flows already run sounds on pointerdown
+  document.addEventListener('pointerdown', function once(){ try{ if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume(); }catch(e){} document.removeEventListener('pointerdown', once); }, {passive:true});
+
+})(); // IIFE
+</script>
+</body>
+</html>
